@@ -1,0 +1,84 @@
+<div class="center">
+	<div class="inputArea">	
+		<div class="inputs col-md-4">
+			<form class="file">
+				<div>
+					<div class="input-group" ng-class="{'has-error': fileInput.fileIn.$invalid}">
+						<span class="input-group-addon">
+							<i class="fa fa-file-text" aria-hidden="true"></i>
+							<i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+						</span>
+						<input 	class="form-control" accept=".txt, .pdf" name="fileIn"													
+								type="file" onchange="angular.element(this).scope().setFile(this)">
+					</div>
+				</div>
+			</form>
+ 			<form class="url">
+				<div>
+					<div class="input-group">
+						<span class="input-group-addon"> URL </span>						
+						<input class="form-control" type="text" size="43"				
+							data-ng-model="inputUrl" data-ng-change="validateUrl()" placeholder="url input">						
+					</div>
+				</div>
+			</form>
+ 		</div>	
+		<div class="buttonGenerate">
+			<button class="btn btn-default buttonProp1"
+					type="button"
+					data-ng-click="generate()"
+					data-ng-disabled="!btnActive">
+					Generate
+			</button>
+		</div>	
+		<div class="buttonOpenAll">			
+			<button class="btn btn-default buttonProp2"	
+					type="button"
+					data-ng-model="openAll"						
+					data-ng-click="openAll()"
+					data-ng-disabled="!responsed">
+				Open All	
+			</button>	
+		</div>
+		<div class="buttonCollapseAll">			
+			<button class="btn btn-default buttonProp2"	
+					type="button"
+					data-ng-model="collapseAll"						
+					data-ng-click="collapseAll()"
+					data-ng-disabled="!responsed">
+				Collapse All				
+			</button>	
+		</div>	
+		<div class="fileDetails">
+			<div class="alertDiv" data-uib-alert data-ng-class="'alert-warning'" 	data-ng-if="panelStyle==0"><strong>{{errorMsg}}</strong></div>
+			<div class="alertDiv" data-uib-alert data-ng-class="'alert-success'" 	data-ng-if="panelStyle==1"><strong>Input: </strong><i>{{errorMsg}}</i></div>
+			<div class="alertDiv" data-uib-alert data-ng-class="'alert-danger'" 		data-ng-if="panelStyle==2">{{errorMsg}}</div>
+		</div>	
+	
+			
+	</div>
+	
+	<div class="dataArea">
+		<div id="loader1" class="center">
+			<span>
+				<i id="spinner1" class="fa fa-cog fa-spin fa-5x fa-fw"></i>
+				<i id="spinner2" class="fa fa-cog fa-spin fa-3x fa-fw"></i>
+				<i id="spinner3" class="fa fa-cog fa-spin fa-fw"></i>
+			</span>
+		</div>	
+		<div id="dataTable" data-ng-include="'html/summary.htm'">			
+<!-- 			<uib-tabset active="activeJustified" justified="true"> 
+				<uib-tab index="0" heading="General User" active>
+					<div data-ng-include="'html/general_user.htm'"></div>
+				</uib-tab> 
+				<uib-tab index="1" heading="Advanced User">
+					<div data-ng-include="'html/advanced_user.htm'"></div>
+				</uib-tab>	 
+			</uib-tabset>
+ -->
+ 		</div>	
+	</div>
+	<footer data-ng-show="responsed">
+		Summary of <strong>{{eulaTitle}}</strong>
+	</footer>
+</div>

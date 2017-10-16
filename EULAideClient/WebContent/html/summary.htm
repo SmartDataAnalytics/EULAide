@@ -1,0 +1,95 @@
+<div class="container row">		
+	<div class="columns" data-ng-show="responsed">
+		<ul class="annot">
+			<li class="header" style="background-color: rgb(0, 239, 0)">Permission</li>
+		</ul>			
+		<uib-accordion close-others="false">
+			<div uib-accordion-group
+				 class="panel-success"						 		 
+				 data-ng-repeat="a in permissions track by $index"
+				 id="{{a.id}}Gen"
+				 data-ng-if="a.action!=undefined"	
+				 ng-click="permissions[$index].isOpened != permissions[$index].isOpened"			 
+				 is-open="permissions[$index].isOpened"> 
+				<uib-accordion-heading>			
+					<!-- <figure><img data-ng-src="images/{{a.action | lowercase }}.png" alt="{{a.action}}" class="img-responsive"> </figure> -->
+<!-- 					Cluster [{{$index+1}}] -->
+					{{a.action}}
+				</uib-accordion-heading>
+				<style>
+				    p {white-space: pre-line;}
+				</style>
+				 <p >{{a.annotation}}<p>
+				<a href="#" 
+					data-toggle="tooltip" title="{{a.annotationSentence}}"
+					style="float:right;display:block;text-decoration: none">
+					more info
+				</a> 				 
+			</div>					
+		</uib-accordion>			
+	</div>
+	
+	<div class="columns" data-ng-show="responsed">
+		<ul class="annot">
+			<li class="header" style="background-color: rgb(72, 120, 255)">Duty</li>
+		</ul>		
+		<uib-accordion close-others="false">
+			<div uib-accordion-group
+				 class="panel-info"						 		 
+				 data-ng-repeat="a in duties track by $index"
+				 id="{{a.id}}Gen"
+				 data-ng-if="a.action != undefined"	
+				 ng-click="duties[$index].isOpened != duties[$index].isOpened"			 
+				 is-open="duties[$index].isOpened">
+				<uib-accordion-heading>	
+					<!-- <img data-ng-src="images/{{a.action | lowercase }}.png" alt="{{a.action}}" class="img-responsive"> -->
+					{{a.action}}						
+				</uib-accordion-heading>
+				<style>
+				    p {white-space: pre-line;}
+				</style>
+				 <p>{{a.annotation}}<p>	
+				<a href="#" 
+					data-toggle="tooltip" title="{{a.annotationSentence}}"
+					style="float:right;display:block;text-decoration: none">
+					more info
+				</a> 				 			
+				<!-- a href="#" 
+					data-ng-if="a.relatedAnnotType != undefined"
+					ng-click="toggleRelPermission(a.id, a.relatedAnnotId, 'Gen')"
+					style="float:right;display:block;text-decoration: none">
+					Related {{a.relatedAnnotType}}
+				</a -->				
+			</div>					
+		</uib-accordion>			
+	</div>
+	
+	<div class="columns" data-ng-show="responsed">
+		<ul class="annot">
+			<li class="header" style="background-color: rgb(255, 85, 70)">Prohibition</li>
+		</ul>			
+		<uib-accordion close-others="false">
+			<div uib-accordion-group
+				 class="panel-danger"						 		 
+				 data-ng-repeat="a in prohibitions track by $index"
+				 id="{{a.id}}Gen"
+				 data-ng-if="a.action!=undefined"	
+				 ng-click="prohibitions[$index].isOpened != prohibitions[$index].isOpened"			 
+				 is-open="prohibitions[$index].isOpened">			 
+				<uib-accordion-heading>
+					{{a.action}}										
+					<!-- <img data-ng-src="images/{{a.action | lowercase }}.png" alt="{{a.action}}" class="img-responsive"> -->						
+				</uib-accordion-heading>
+				<style>
+				    p {white-space: pre-line;}
+				</style>
+				<p>{{a.annotation}}<p>		
+				<a href="#" 
+					data-toggle="tooltip" title="{{a.annotationSentence}}"
+					style="float:right;display:block;text-decoration: none">
+					more info
+				</a> 						
+			</div>					
+		</uib-accordion>			
+	</div>	
+</div>
