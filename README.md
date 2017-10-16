@@ -5,7 +5,7 @@ For the complete overview of the approach please take a look at the published pa
 2. https://www.researchgate.net/publication/318361089_Semantic_Similarity_based_Clustering_of_License_Excerpts_for_Improved_End-User_Interpretation
 
 # Deployment: 
-There are two applications: a back-end and a front-end; 
+There are two applications: a back-end and a front-end; The EULAideClient in this repo is the front-end and all other files belong to the back-end.
 To deploy the back-end, run Main.java as a java-application. Make sure to allocate at least 1 GB memory to avoid the OutOfMemory error.
 The client is a light app with a bunch of HTML, CSS and angular js files. Use any application server to run this app as a web app (e.g., tomcat)
 
