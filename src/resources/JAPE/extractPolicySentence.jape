@@ -1,0 +1,90 @@
+Phase:	extractPolicySentence
+Input: Token Permission Prohibition Duty Sentence
+Options: control = appelt
+
+
+
+Rule: permissionSentence
+(
+  (
+	(({Address}|{specialDots})(({Token.kind == punctuation , Token.string != "."}({SpaceToken.kind == space})?)|{Token.string == "."}|{SpaceToken.kind == space}))|
+	({Token.string != "."}({SpaceToken})?)
+  )*
+  ({Permission}): permissions
+  (
+	(({Address}|{specialDots})(({Token.kind == punctuation , Token.string != "."}({SpaceToken.kind == space})?)|{Token.string == "."}|{SpaceToken.kind == space}))|
+	({Token.string != "."}({SpaceToken})?)
+  )*
+)  
+: label
+
+-->
+{
+	gate.AnnotationSet sentences = (gate.AnnotationSet)bindings.get("label"); 
+    gate.AnnotationSet permissions = (gate.AnnotationSet)bindings.get("permissions"); 
+	try{
+		gate.Annotation permission = (gate.Annotation)permissions.iterator().next();
+		String sentence = doc.getContent().getContent(sentences.firstNode().getOffset(), sentences.lastNode().getOffset()).toString();	
+		permission.getFeatures().put("sentence",sentence);
+		
+	}catch(InvalidOffsetException ioe){
+		  throw new GateRuntimeException(ioe);
+	}	
+}
+
+Rule: prohibitionSentence
+(
+  (
+	(({Address}|{specialDots})(({Token.kind == punctuation , Token.string != "."}({SpaceToken.kind == space})?)|{Token.string == "."}|{SpaceToken.kind == space}))|
+	({Token.string != "."}({SpaceToken})?)
+  )*
+  ({Prohibition}): prohibitions
+  (
+	(({Address}|{specialDots})(({Token.kind == punctuation , Token.string != "."}({SpaceToken.kind == space})?)|{Token.string == "."}|{SpaceToken.kind == space}))|
+	({Token.string != "."}({SpaceToken})?)
+  )*
+)  
+: label
+
+-->
+{
+	gate.AnnotationSet sentences = (gate.AnnotationSet)bindings.get("label"); 
+    gate.AnnotationSet prohibitions = (gate.AnnotationSet)bindings.get("prohibitions"); 
+	try{
+		gate.Annotation prohibition = (gate.Annotation)prohibitions.iterator().next();
+		String sentence = doc.getContent().getContent(sentences.firstNode().getOffset(), sentences.lastNode().getOffset()).toString();	
+		prohibition.getFeatures().put("sentence",sentence);
+		
+	}catch(InvalidOffsetException ioe){
+		  throw new GateRuntimeException(ioe);
+	}	
+}
+
+
+Rule: dutySentence
+(
+  (
+	(({Address}|{specialDots})(({Token.kind == punctuation , Token.string != "."}({SpaceToken.kind == space})?)|{Token.string == "."}|{SpaceToken.kind == space}))|
+	({Token.string != "."}({SpaceToken})?)
+  )*
+  ({Duty}): duties
+  (
+	(({Address}|{specialDots})(({Token.kind == punctuation , Token.string != "."}({SpaceToken.kind == space})?)|{Token.string == "."}|{SpaceToken.kind == space}))|
+	({Token.string != "."}({SpaceToken})?)
+  )*
+)  
+: label
+
+-->
+{
+	gate.AnnotationSet sentences = (gate.AnnotationSet)bindings.get("label"); 
+    gate.AnnotationSet duties = (gate.AnnotationSet)bindings.get("duties"); 
+	try{
+		gate.Annotation duty = (gate.Annotation)duties.iterator().next();
+		String sentence = doc.getContent().getContent(sentences.firstNode().getOffset(), sentences.lastNode().getOffset()).toString();	
+		duty.getFeatures().put("sentence",sentence);
+		
+	}catch(InvalidOffsetException ioe){
+		  throw new GateRuntimeException(ioe);
+	}	
+}

@@ -1,0 +1,26 @@
+Determine unigram frequencies (1st run through corpus)...
+Corpus has 1036250 tokens.
+1983 unigrams found.
+46494 2- and 3-grams found.
+indexed 48477 unigrams and larger n-grams.
+found 874 phrases of length 2.
+found 175 phrases of length 3.
+phrases found: 542
+There are now 32437 multi-token words in corpus.
+creating word frequency list...
+Corpus size: 998644
+Vocabulary size: 3239
+OK
+counting co-occurrences in specified context...
+Sorting 3 temporary files...
+OK.
+merge sorting temp files...
+OK.
+OK
+Number of word pairs: 622110
+computing feature weights...
+OK
+Number of word pairs after feature weight filtering: 235115
+==> Word space for DISCO successfully generated! <==
+word space directory: EULA Word Space\DISCO-idx
+number of words in word space: 3239

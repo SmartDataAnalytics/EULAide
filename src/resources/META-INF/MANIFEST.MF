@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Built-By: Guest
+Build-Jdk: 1.8.0_65
+Created-By: Maven Integration for Eclipse
+Main-Class: uni.bonn.eula.Main

@@ -1,0 +1,39 @@
+Phase:	ambiguousPolicies
+Input: Token Permission Prohibition Duty
+Options: control = appelt
+
+
+
+Rule: ambiguousPermissions
+(
+ {Permission contains {Token.root == it}}|
+ {Permission contains {Token.root == them}}|
+ {Permission contains {Token.root == they}}
+): label
+
+-->
+:label.ambiguousPermission = {kind = "ambiguousPermission", rule = "ambiguousPermissions"}
+
+
+
+Rule: ambiguousProhibition
+(
+ {Prohibition contains {Token.root == it}}|
+ {Prohibition contains {Token.root == them}}|
+ {Prohibition contains {Token.root == they}}
+): label
+
+-->
+:label.ambiguousProhibition = {kind = "ambiguousProhibition", rule = "ambiguousProhibitions"}
+
+
+
+Rule: ambiguousDuties
+(
+ {Duty contains {Token.root == it}}|
+ {Duty contains {Token.root == them}}
+ {Duty contains {Token.root == they}}
+): label
+
+-->
+:label.ambiguousDuty = {kind = "ambiguousDuty", rule = "ambiguousDuties"}

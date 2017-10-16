@@ -1,0 +1,483 @@
+Phase:	extractPermissionsProhibitions
+Input: Lookup Token SpaceToken Action LicensesName PermProhActions specialDots Address Asset ONLYIF
+Options: control = appelt
+
+Macro: NOUN_PHRASE
+(
+{Token.kind == word , Token.category == NN}|
+{Token.kind == word , Token.category == NNS}|
+{Token.kind == word , Token.category == NNP}|
+{Token.kind == word ,Token.category == NNPS}
+)
+
+
+Macro: ADVERB
+(
+{Token.kind == word , Token.category == RB}|
+{Token.kind == word , Token.category == RBR}|
+{Token.kind == word , Token.category == RBS}
+)
+
+Macro: VERB
+(
+{Token.kind == word , Token.root != "be" , Token.category == VB}|
+{Token.kind == word , Token.root != "be" , Token.category == VBD}|
+{Token.kind == word , Token.root != "be" , Token.category == VBG}|
+{Token.kind == word , Token.root != "be" , Token.category == VBN}|
+{Token.kind == word , Token.root != "be" , Token.category == VBP}|
+{Token.kind == word , Token.root != "be" , Token.category == VBZ}|
+{Token.kind == word , Token.category == TO}|
+{Token.kind == word , Token.category == JJ}
+
+)
+
+Macro: PROHIBITION_WORDS
+(
+({Token.string == "Do"}{SpaceToken}{Token.string == "not"})|
+({Token.string == "Don"}{Token.string == "t"})|
+({Token.root == "please"}{SpaceToken}{Token.root == "do"}({SpaceToken})?({Token.root == "not"}|{Token.string == "n't"}))|
+(
+((({Token.root == "the"}{SpaceToken})?({Token.root == "user"}|{Token.root == "users"}))|{Token.root == "you"}|{Token.root == "contributor"}|{Token.root == "contributors"}|{Token.root == "recipient"}|{Token.root == "licensee"})
+{SpaceToken}
+({Token.root == "also"}{SpaceToken})?
+(({Token.string == "may"}|{Token.string == "MAY"}|{Token.root == "will"}|{Token.root == "agree"}|{Token.root == "can"}|{Token.root == "should"}|{Token.root == "must"})({SpaceToken})?)
+{Token.root == "not"}({Token.kind == punctuation , Token.string != "."})?
+)|
+({LicensesName}{SpaceToken}{Token.root == "do"}{SpaceToken}{Token.root == "not"}{SpaceToken}({Token.root == "grant"}|{Token.root == "give"}))|
+({Token.string == "no"}{SpaceToken}({Token.root == "right"}|{Token.root == "permission"}|{Token.root == "part"}|{Token.root == "content"}))|
+(
+(({Token.root == "the"}{SpaceToken}{Token.root == "user"})|{Token.root == "you"}|{Token.root == "contributor"}|{Token.root == "recipient"}|{Token.root == "licensee"}){SpaceToken}
+(({Token.root == "can"}{Token.kind == punctuation}{Token.root == "t"}) | ({Token.root == "be"}{SpaceToken}{Token.root == "prohibit"}))
+)
+
+)
+
+Macro: PERMISSION_WORDS
+(
+(
+	({Token.string == "give"}|{Token.string == "gives"}|{Token.string == "grant"}|{Token.string == "grants"}|{Token.string == "allow"}|{Token.string == "allows"}|{Token.string == "permit"}|{Token.string == "permits"})
+	({SpaceToken}{Token.root == "to"})?{SpaceToken}
+	({Token.root == "everyone"}|{Token.root == "user"}|{Token.root == "you"}|{Token.root == "contributor"}|{Token.root == "recipient"}|{Token.root == "licensee"})
+)|
+(
+  ({Token.root == "everyone"}|{Token.root == "user"}|{Token.root == "you"}|{Token.root == "contributor"}|{Token.root == "recipient"}|{Token.root == "licensee"})
+  {SpaceToken}{Token.root == "be"}{SpaceToken}({Token, Token.string != not}{SpaceToken})?({Token.string == "given"}|{Token.string == "granted"}|{Token.string == "allowed"}|{Token.string == "permitted"})
+)|
+(
+  (
+	({Token.root == "everyone"}|{Token.root == "user"}|{Token.root == "you"}|{Token.root == "contributor"}|{Token.root == "recipient"}|{Token.root == "licensee"}){SpaceToken}
+	(
+	  ({Token.root == "be"}{SpaceToken}({Token}{SpaceToken})?{Token.root == "free"})|
+	  ({Token.root == "have"}{SpaceToken}{Token.root == "the"}{SpaceToken}{Token.root == "freedom"})	
+	)
+  )|
+  ({Token.root == "you"}{Token.kind == punctuation}{Token.root == "re"}({SpaceToken})?{Token.root == "free"}({SpaceToken})?)
+)
+)
+
+Macro: PERMISSION_WORDS2
+(
+(
+({Token.root == "everyone"}|{Token.root == "user"}|{Token.root == "you"}|{Token.root == "contributor"}|{Token.root == "recipient"}|{Token.root == "licensee"})
+{SpaceToken}({Token.string == "can"}|{Token.string == "CAN"}|{Token.string == "may"}|{Token.string == "MAY"})
+)|
+(
+  (
+	({Token.root == "everyone"}|{Token.root == "user"}|{Token.root == "you"}|{Token.root == "contributor"}|{Token.root == "recipient"}|{Token.root == "licensee"}){SpaceToken}
+	(
+	  ({Token.root == "be"}{SpaceToken}({Token}{SpaceToken})?{Token.root == "free"})|
+	  ({Token.root == "have"}{SpaceToken}{Token.root == "the"}{SpaceToken}{Token.root == "freedom"})	
+	)
+  )|
+  ({Token.root == "you"}{Token.kind == punctuation}{Token.root == "re"}({SpaceToken})?{Token.root == "free"}({SpaceToken})?)
+)
+)
+
+Rule: Prohibition1
+(
+	PROHIBITION_WORDS({SpaceToken})*
+	( 
+		(({Address}|{specialDots})(({Token.kind == punctuation , Token.string != "."}({SpaceToken.kind == space})?)|{Token.string == "."}|{SpaceToken.kind == space})) |
+		({Token.string != "." , Token.category != VB , Token.category != VBD , Token.category != VBG , Token.category != VBN , Token.category != VBP ,
+		Token.category != VBZ , Token.category != JJ, !PermProhActions}({SpaceToken})?)
+	)*
+    (
+		( 
+			((ADVERB){SpaceToken})?
+			((VERB)|{Token.string == "or"}|{Token.string == "and"}|{Token.string == "to"}|{PermProhActions})
+			({Token.kind == punctuation})? ({SpaceToken})?
+		)*	
+		{PermProhActions}({SpaceToken})?  
+	): PermProhActions	  
+  ((({Address}|{specialDots})(({Token.kind == punctuation , Token.string != "."}({SpaceToken.kind == space})?)|{Token.string == "."}|{SpaceToken.kind == space})) |({Token.string != "." }({SpaceToken})*))*   
+   
+): label
+
+-->
+{
+	gate.AnnotationSet prohibitions = (gate.AnnotationSet)bindings.get("label");     
+	gate.AnnotationSet action = (gate.AnnotationSet)bindings.get("PermProhActions"); 
+	gate.FeatureMap features = Factory.newFeatureMap();
+	features.put("rule","Prohibition1");
+	features.put("kind","Prohibition");			
+	try{	
+		features.put("action",doc.getContent().getContent(action.firstNode().getOffset(), action.lastNode().getOffset()).toString());			
+	
+	}catch(InvalidOffsetException ioe){
+		  throw new GateRuntimeException(ioe);
+	}	
+	outputAS.add(prohibitions.firstNode(), prohibitions.lastNode(), "Prohibition",features);
+}
+
+
+Rule: Prohibition6
+( 
+	PROHIBITION_WORDS({SpaceToken})*
+	(
+	(({Address}|{specialDots})(({Token.kind == punctuation , Token.string != "."}({SpaceToken.kind == space})?)|{Token.string == "."}|{SpaceToken.kind == space})) |
+	({Token.string != "." , !PermProhActions}({SpaceToken})*)
+	)*   
+    ({PermProhActions}): PermProhActions
+	({SpaceToken})?
+	((({Address}|{specialDots})(({Token.kind == punctuation , Token.string != "."}({SpaceToken.kind == space})?)|{Token.string == "."}|{SpaceToken.kind == space})) |({Token.string != "."}({SpaceToken})*))*   
+   
+): label
+
+-->
+{
+	gate.AnnotationSet prohibitions = (gate.AnnotationSet)bindings.get("label");     
+	gate.AnnotationSet action = (gate.AnnotationSet)bindings.get("PermProhActions"); 
+	gate.FeatureMap features = Factory.newFeatureMap();
+	features.put("rule","Prohibition6");
+	features.put("kind","Prohibition");		
+	features.put("action",((gate.Annotation)action.iterator().next()).getFeatures().get("propertyValue").toString());			
+	outputAS.add(prohibitions.firstNode(), prohibitions.lastNode(), "Prohibition",features);
+}
+
+
+
+
+Rule: Prohibition2
+(
+	({Address}|{Token.root == "license"}|{Token.root == "agreement"}|{Asset}){SpaceToken}
+	({Token.root == "can"}|{Token.root == "may"}){SpaceToken}{Token.root == "not"}{SpaceToken}{Token.root == "be"}{SpaceToken} 
+	(
+	  (
+		{PermProhActions}({SpaceToken})?
+		((({Address}|{specialDots})(({Token.kind == punctuation , Token.string != "."}({SpaceToken.kind == space})?)|{Token.string == "."}|{SpaceToken.kind == space})) |({Token.string != "."}({SpaceToken})?))*   		
+		{PermProhActions}({SpaceToken})?		
+	  )|
+	  ({PermProhActions}({SpaceToken})?)
+	): PermProhActions		
+): label
+
+-->
+{
+	gate.AnnotationSet prohibitions = (gate.AnnotationSet)bindings.get("label");     
+	gate.AnnotationSet action = (gate.AnnotationSet)bindings.get("PermProhActions"); 
+	gate.FeatureMap features = Factory.newFeatureMap();
+	features.put("rule","Prohibition2");
+	features.put("kind","Prohibition");			
+	try{
+		features.put("action",doc.getContent().getContent(action.firstNode().getOffset(), action.lastNode().getOffset()).toString());					
+	}catch(InvalidOffsetException ioe){
+		  throw new GateRuntimeException(ioe);
+	}	
+	outputAS.add(prohibitions.firstNode(), prohibitions.lastNode(), "Prohibition",features);
+}
+
+
+
+Rule: Prohibition3
+(
+    ({Token.kind == word}({Token.kind == punctuation , Token.string != "."})?{SpaceToken.kind == space})*
+	(
+		{PermProhActions}({SpaceToken})?
+	): PermProhActions	  	  
+	((({Address}|{specialDots})(({Token.kind == punctuation , Token.string != "."}({SpaceToken.kind == space})?)|{Token.string == "."}|{SpaceToken.kind == space})) |({Token.string != "."}({SpaceToken})?))*   
+	(
+	({Token.root == "be"}{SpaceToken}({Token}{SpaceToken})?{Token.string == "prohibited"})|
+	(({Token.root == "be"}){SpaceToken}{Token.string == "not"}{SpaceToken}({Token.string == "allowed"}|{Token.string == "permitted"}))|
+	(({Token.string == "isn"}|{Token.string == "aren"}){Token.kind == punctuation}{Token.string == "t"}{SpaceToken}({Token.string == "allowed"}|{Token.string == "permitted"}))
+	):temp
+): label
+-->
+{
+	gate.AnnotationSet prohibitions = (gate.AnnotationSet)bindings.get("label");     	
+	gate.AnnotationSet action = (gate.AnnotationSet)bindings.get("PermProhActions"); 
+	gate.FeatureMap features = Factory.newFeatureMap();
+	features.put("rule","Prohibition3");
+	features.put("kind","Prohibition");		
+	try{	
+		features.put("action",doc.getContent().getContent(action.firstNode().getOffset(), action.lastNode().getOffset()).toString());					
+	}catch(InvalidOffsetException ioe){
+		  throw new GateRuntimeException(ioe);
+	}	
+	
+	outputAS.add(prohibitions.firstNode(), prohibitions.lastNode(), "Prohibition",features);
+}
+
+
+
+
+Rule: Prohibition5
+(
+	{Token.root == "if"}{SpaceToken}
+	((ADVERB) {SpaceToken})?
+	(
+	(({Token.root == "the"}{SpaceToken})?({Token.root == "user"}|{Token.root == "users"}))|
+	{Token.root == "you"}|{Token.string == "your"}|{Token.root == "contributor"}|{Token.root == "contributors"}|{Token.root == "recipient"}|
+	{Token.root == "licensee"}|{Token.root == "we"}
+	)
+	{SpaceToken}
+	((({Address}|{specialDots})(({Token.kind == punctuation , Token.string != "."}({SpaceToken.kind == space})?)|{Token.string == "."}|{SpaceToken.kind == space})) |({Token.string != ".", Token.root != "which"}({SpaceToken})?))*   
+): condition
+(
+	 PROHIBITION_WORDS({SpaceToken})?
+	(
+		(({Address}|{specialDots})(({Token.kind == punctuation , Token.string != "."}({SpaceToken.kind == space})?)|{Token.string == "."}|{SpaceToken.kind == space})) |
+		({Token.string != ".", !PermProhActions}({SpaceToken})?)
+	)* 
+	(
+	  (
+		{PermProhActions}({SpaceToken})?
+		(
+		  ((({Address}|{specialDots})(({Token.kind == punctuation , Token.string != "."}({SpaceToken.kind == space})?)|{Token.string == "."}|{SpaceToken.kind == space})) |({Token.string != "."}({SpaceToken})?))*
+		  {PermProhActions}({SpaceToken})?
+		)
+		{PermProhActions}({SpaceToken})?
+	  )|
+	  ({PermProhActions}({SpaceToken})?)
+    ): PermProhActions	  
+	((({Address}|{specialDots})(({Token.kind == punctuation , Token.string != "."}({SpaceToken.kind == space})?)|{Token.string == "."}|{SpaceToken.kind == space})) |({Token.string != "."}({SpaceToken})?))*   
+): label
+
+-->
+{
+	gate.AnnotationSet prohibitions = (gate.AnnotationSet)bindings.get("label");     
+	gate.AnnotationSet action = (gate.AnnotationSet)bindings.get("PermProhActions"); 
+	gate.AnnotationSet condition = (gate.AnnotationSet)bindings.get("condition"); 
+	gate.FeatureMap features = Factory.newFeatureMap();
+	features.put("rule","Prohibition5");
+	features.put("kind","Prohibition");		
+	try{	
+		features.put("action",doc.getContent().getContent(action.firstNode().getOffset(), action.lastNode().getOffset()).toString());	
+		features.put("condition",doc.getContent().getContent(condition.firstNode().getOffset(), condition.lastNode().getOffset()).toString());							
+	}catch(InvalidOffsetException ioe){
+		  throw new GateRuntimeException(ioe);
+	}	
+	outputAS.add(prohibitions.firstNode(), prohibitions.lastNode(), "Prohibition",features);
+}
+
+
+
+
+
+
+Rule: Permission7
+Priority: 50
+(
+	(
+	  {Token.root == "if"}{SpaceToken}
+	  (
+		(({Address}|{specialDots})(({Token.kind == punctuation , Token.string != "."}({SpaceToken.kind == space})?)|{Token.string == "."}|{SpaceToken.kind == space}))|
+		({Token.string != ".", Token.root != "which" }({SpaceToken.kind == space})?)
+	  )*   
+	)?
+): condition
+(
+  PERMISSION_WORDS2({SpaceToken})? 
+  ({Token.kind == word , Token.root != "be" , Token.root != "not", Token.root != "need" , Token.root != "forget", !PermProhActions }{SpaceToken})*  
+  (
+	  {PermProhActions}({Token.kind == punctuation, Token.string != "."})?{SpaceToken}
+	  (
+		(({Token.string == "or"}|{Token.string == "and"}|{Token.string == "to"}){SpaceToken})?		
+		({PermProhActions}|(VERB))({Token.kind == punctuation, Token.string != "."})?{SpaceToken}
+	  )*
+  ):PermProhActions	
+  (
+	  (({Address}|{specialDots})(({Token.kind == punctuation , Token.string != "."}({SpaceToken.kind == space})?)|{Token.string == "."}|{SpaceToken.kind == space}))|
+	  ({ Token.string != "must", Token.root != "but" ,Token.root != "however", Token.string != "should", Token.string != "provided", Token.string != ".", Token.string != "–" , !ONLYIF}({SpaceToken})?)
+  )* 
+): label
+
+-->
+{
+	gate.AnnotationSet permissions = (gate.AnnotationSet)bindings.get("label");     
+	gate.AnnotationSet action = (gate.AnnotationSet)bindings.get("PermProhActions"); 	
+	gate.AnnotationSet condition = (gate.AnnotationSet)bindings.get("condition"); 		
+	gate.FeatureMap features = Factory.newFeatureMap();
+	features.put("rule","Permission7");
+	features.put("kind","Permission");		
+	try{
+		features.put("action",doc.getContent().getContent(action.firstNode().getOffset(), action.lastNode().getOffset()).toString());		
+		if (condition != null) {
+			features.put("condition",doc.getContent().getContent(condition.firstNode().getOffset(), condition.lastNode().getOffset()).toString());		
+		}
+	}catch(InvalidOffsetException ioe){
+		  throw new GateRuntimeException(ioe);
+	}		
+	outputAS.add(permissions.firstNode(), permissions.lastNode(), "Permission",features);
+}
+
+
+
+
+Rule: Permission1
+(
+	(
+	  {Token.root == "if"}{SpaceToken}
+	  (
+		(({Address}|{specialDots})(({Token.kind == punctuation , Token.string != "."}({SpaceToken.kind == space})?)|{Token.string == "."}|{SpaceToken.kind == space}))|
+		({Token.string != ".", Token.root != "which" }({SpaceToken.kind == space})?)
+	  )*   
+	)?
+): condition
+{Token.root != "not", Token.root != "to"}{SpaceToken}
+(
+   PERMISSION_WORDS({SpaceToken})?
+	( 
+		(({Address}|{specialDots})(({Token.kind == punctuation , Token.string != "."}({SpaceToken.kind == space})?)|{Token.string == "."}|{SpaceToken.kind == space})) |
+		({Token.string != "." , !PermProhActions}({SpaceToken})*)
+	)*
+    (
+	    {PermProhActions}({Token.kind == punctuation})? ({SpaceToken})?  
+		( 
+			((ADVERB){SpaceToken})?
+			((VERB)|{Token.string == "or"}|{Token.string == "and"}|{Token.string == "to"}|{PermProhActions})
+			({Token.kind == punctuation})? ({SpaceToken})?
+		)*	
+		{PermProhActions}({SpaceToken})?  
+	): PermProhActions	  
+  (
+  (({Address}|{specialDots})(({Token.kind == punctuation , Token.string != "."}({SpaceToken.kind == space})?)|{Token.string == "."}|{SpaceToken.kind == space}))|
+  ({ Token.string != "must", Token.root != "but" , Token.root != "however", Token.string != "should", Token.string != "provided", Token.string != ".", Token.string != "–"}({SpaceToken})?)
+  )*  
+): label
+
+-->
+{
+	gate.AnnotationSet permissions = (gate.AnnotationSet)bindings.get("label"); 
+	gate.AnnotationSet action = (gate.AnnotationSet)bindings.get("PermProhActions"); 	
+	gate.AnnotationSet condition = (gate.AnnotationSet)bindings.get("condition"); 	
+	gate.FeatureMap features = Factory.newFeatureMap();
+	features.put("rule","Permission1");
+	features.put("kind","Permission");		
+	try{	
+		features.put("action",doc.getContent().getContent(action.firstNode().getOffset(), action.lastNode().getOffset()).toString());		
+		if (condition != null) {
+			features.put("condition",doc.getContent().getContent(condition.firstNode().getOffset(), condition.lastNode().getOffset()).toString());		
+		}
+	}catch(InvalidOffsetException ioe){
+		  throw new GateRuntimeException(ioe);
+	}	
+	outputAS.add(permissions.firstNode(), permissions.lastNode(), "Permission",features);
+}
+
+
+
+
+
+Rule: Permission6
+(
+	(
+	  {Token.root == "if"}{SpaceToken}
+	  (
+		(({Address}|{specialDots})(({Token.kind == punctuation , Token.string != "."}({SpaceToken.kind == space})?)|{Token.string == "."}|{SpaceToken.kind == space}))|
+		({Token.string != ".", Token.root != "which" }({SpaceToken.kind == space})?)
+	  )*   
+	)?
+): condition
+{Token.root != "not", Token.root != "to"}{SpaceToken}
+(
+  PERMISSION_WORDS({SpaceToken})?
+  (
+	(({Address}|{specialDots})(({Token.kind == punctuation , Token.string != "."}({SpaceToken.kind == space})?)|{Token.string == "."}|{SpaceToken.kind == space}))|
+	({Token.string != "must", Token.root != "but", Token.root != "however",  Token.string != "should", Token.string != "provided", Token.string != ".", Token.string != "–", !PermProhActions}({SpaceToken})?)
+  )*   	  
+  ({PermProhActions}): PermProhActions
+  ({SpaceToken})?
+  (
+  (({Address}|{specialDots})(({Token.kind == punctuation , Token.string != "."}({SpaceToken.kind == space})?)|{Token.string == "."}|{SpaceToken.kind == space}))|
+  ({Token.string != "must", Token.root != "but" ,Token.root != "however", Token.string != "should", Token.string != "provided", Token.string != ".", Token.string != "–"}({SpaceToken})?)
+  )*  
+): label
+
+-->
+{
+	gate.AnnotationSet permissions = (gate.AnnotationSet)bindings.get("label");     
+	gate.AnnotationSet action = (gate.AnnotationSet)bindings.get("PermProhActions"); 	
+	gate.AnnotationSet condition = (gate.AnnotationSet)bindings.get("condition"); 	
+	gate.FeatureMap features = Factory.newFeatureMap();
+	features.put("rule","Permission6");
+	features.put("kind","Permission");		
+	features.put("action",((gate.Annotation)action.iterator().next()).getFeatures().get("propertyValue").toString());	
+	try{			
+		if (condition != null) {
+			features.put("condition",doc.getContent().getContent(condition.firstNode().getOffset(), condition.lastNode().getOffset()).toString());							
+		}
+	}catch(InvalidOffsetException ioe){
+		  throw new GateRuntimeException(ioe);
+	}		
+	outputAS.add(permissions.firstNode(), permissions.lastNode(), "Permission",features);
+}
+
+
+
+
+
+
+
+Rule: Permission3
+(
+	(
+	  {Token.root == "if"}{SpaceToken}
+	  (
+		(({Address}|{specialDots})(({Token.kind == punctuation , Token.string != "."}({SpaceToken.kind == space})?)|{Token.string == "."}|{SpaceToken.kind == space}))|
+		({Token.string != ".", Token.root != "which" }({SpaceToken.kind == space})?)
+	  )*   
+	)?
+): condition
+(	
+	({Token.root == "license"}|{Token.root == "agreement"}|{Asset}){SpaceToken}
+	({Token.kind == word , Token.root != "no" , Token.root != "not"}{SpaceToken})*
+	(({Token.root == "can"}|{Token.root == "may"}){SpaceToken}{Token.root == "be"}){SpaceToken} 	
+	(
+		(
+			( 
+				((ADVERB){SpaceToken})?
+				((VERB)|{Token.string == "or"}|{Token.string == "and"}|{Token.string == "to"}|{PermProhActions})
+				({Token.kind == punctuation})? ({SpaceToken})?
+			)+	
+			{PermProhActions}({SpaceToken})?  		
+		)|
+		({PermProhActions}({SpaceToken})?)
+    ): PermProhActions  	  
+   (({Address}|{specialDots}|{Token.kind == word})({SpaceToken})?)*   
+	
+
+): label
+
+-->
+
+{
+	gate.AnnotationSet permissions = (gate.AnnotationSet)bindings.get("label");    
+	gate.AnnotationSet action = (gate.AnnotationSet)bindings.get("PermProhActions");
+	gate.AnnotationSet condition = (gate.AnnotationSet)bindings.get("condition"); 	 		
+	gate.FeatureMap features = Factory.newFeatureMap();
+	features.put("rule","Permission3");
+	features.put("kind","Permission");		
+	try{	
+		features.put("action",doc.getContent().getContent(action.firstNode().getOffset(), action.lastNode().getOffset()).toString());					
+		if (condition != null) {
+			features.put("condition",doc.getContent().getContent(condition.firstNode().getOffset(), condition.lastNode().getOffset()).toString());							
+		}
+	}catch(InvalidOffsetException ioe){
+		  throw new GateRuntimeException(ioe);
+	}	
+	
+	outputAS.add(permissions.firstNode(), permissions.lastNode(), "Permission",features);
+}
+
+
+

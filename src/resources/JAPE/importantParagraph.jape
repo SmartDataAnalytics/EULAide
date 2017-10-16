@@ -1,0 +1,27 @@
+Phase:	importantParagraph
+Input: paragraph ambiguousPermission ambiguousProhibition ambiguousDuty
+Options: control = appelt
+
+
+
+Rule: paragraphBoundary
+(
+ {paragraph contains ambiguousPermission}|
+ {paragraph contains ambiguousProhibition}|
+ {paragraph contains ambiguousDuty}
+): label
+
+-->
+
+{
+        gate.AnnotationSet paragraphs = (gate.AnnotationSet)bindings.get("label"); 
+        gate.Annotation paragraph = (gate.Annotation)paragraphs.iterator().next();
+		gate.FeatureMap features = Factory.newFeatureMap();
+		features.put("kind", "paragraph"); 
+		features.put("rule","paragraphBoundary");
+		features.put("Id",paragraph.getId());
+		outputAS.add(paragraphs.firstNode(), paragraphs.lastNode(), "importantParagraphs", features);
+
+}
+
+

@@ -1,0 +1,293 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>uni.bonn.eula</groupId>
+	<artifactId>terms-conditions</artifactId>
+	<packaging>jar</packaging>
+	<version>1.0-SNAPSHOT</version>
+	<name>terms-conditions</name>
+
+	<properties>
+		<jersey.version>2.6</jersey.version>
+		<grizzly.version>2.3.13</grizzly.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.glassfish.jersey</groupId>
+				<artifactId>jersey-bom</artifactId>
+				<version>${jersey.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+
+<!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
+<dependency>
+    <groupId>org.jsoup</groupId>
+    <artifactId>jsoup</artifactId>
+    <version>1.8.3</version>
+</dependency>
+
+	
+<dependency>
+    <groupId>org.deeplearning4j</groupId>
+    <artifactId>deeplearning4j-nlp</artifactId>
+    <version>0.8.0</version>
+</dependency>
+
+
+<dependency>
+    <groupId>org.deeplearning4j</groupId>
+    <artifactId>deeplearning4j-ui</artifactId>
+    <version>0.6.0</version>
+</dependency>
+
+<dependency>
+    <groupId>org.deeplearning4j</groupId>
+    <artifactId>deeplearning4j-nn</artifactId>
+    <version>0.7.2</version>
+</dependency>
+
+<dependency>
+    <groupId>org.nd4j</groupId>
+    <artifactId>nd4j-native</artifactId>
+    <version>0.8.0</version>
+</dependency >
+
+<dependency>
+    <groupId>org.nd4j</groupId>
+    <artifactId>nd4j-api</artifactId>
+    <version>0.8.0</version>
+</dependency>
+
+
+
+<dependency>
+    <groupId>com.hp.hpl.jena</groupId>
+    <artifactId>jena</artifactId>
+    <version>2.5.5</version>
+</dependency>
+
+
+<dependency>
+    <groupId>com.hp.hpl.jena</groupId>
+    <artifactId>tdb</artifactId>
+    <version>0.8.5</version>
+</dependency>
+	
+		<dependency>
+		  <!-- jsoup HTML parser library @ http://jsoup.org/ -->
+		  <groupId>org.jsoup</groupId>
+		  <artifactId>jsoup</artifactId>
+		  <version>1.9.2</version>
+		</dependency>	
+		<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-grizzly2-http</artifactId>
+		</dependency>
+		<!-- uncomment this to get JSON support: -->
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-moxy</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-multipart</artifactId>
+			 <version>${jersey.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
+		</dependency>		
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.9</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>uk.ac.gate</groupId>
+			<artifactId>gate-core</artifactId>
+			<version>8.1</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>lucene-core</artifactId>
+					<groupId>org.apache.lucene</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+
+
+<!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->
+<dependency>
+    <groupId>org.apache.lucene</groupId>
+    <artifactId>lucene-core</artifactId>
+    <version>5.1.0</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-queryparser -->
+<dependency>
+    <groupId>org.apache.lucene</groupId>
+    <artifactId>lucene-queryparser</artifactId>
+    <version>5.0.0</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-common -->
+<dependency>
+    <groupId>org.apache.lucene</groupId>
+    <artifactId>lucene-analyzers-common</artifactId>
+    <version>5.0.0</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-backward-codecs -->
+<dependency>
+    <groupId>org.apache.lucene</groupId>
+    <artifactId>lucene-backward-codecs</artifactId>
+    <version>5.1.0</version>
+</dependency>
+
+		<dependency>
+			<groupId>edu.stanford.nlp</groupId>
+			<artifactId>stanford-parser</artifactId>
+			<version>3.7.0</version>
+		</dependency>
+		<dependency>
+			<groupId>edu.stanford.nlp</groupId>
+			<artifactId>stanford-corenlp</artifactId>
+			<version>3.7.0</version>
+		</dependency>
+		<dependency>
+			<groupId>edu.stanford.nlp</groupId>
+			<artifactId>stanford-corenlp</artifactId>
+			<version>3.7.0</version>
+			<classifier>models</classifier>
+		</dependency>
+		<dependency>
+			<groupId>
+        		edu.washington.cs.knowitall.stanford-corenlp
+        	</groupId>
+			<artifactId>stanford-parse-models</artifactId>
+			<version>1.3.5</version>
+		</dependency>
+
+<dependency>
+    <groupId>com.fasterxml.jackson.jaxrs</groupId>
+    <artifactId>jackson-jaxrs-json-provider</artifactId>
+    <version>2.4.1</version>
+</dependency>
+
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>
+    				src/resources
+    			</directory>
+			</resource>
+		</resources>
+		
+		<plugins>
+		
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.5.1</version>
+				<inherited>true</inherited>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		    <plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-jar-plugin</artifactId>
+		        <configuration>
+		            <archive>
+		                <manifest>
+               				<addClasspath>true</addClasspath>
+               				<classpathPrefix>lib/</classpathPrefix>		                
+		                    <mainClass>uni.bonn.eula.Main</mainClass>
+		                </manifest>
+		            </archive>
+		        </configuration>
+		    </plugin>			
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.2.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>java</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<mainClass>uni.bonn.eula.Main</mainClass>
+				</configuration>
+			</plugin>
+			<!-- Maven Assembly Plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4.1</version>
+				<configuration>
+					<!-- get all project dependencies -->
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<!-- MainClass in mainfest make a executable jar -->
+					<archive>
+					  <manifest>
+						<mainClass>uni.bonn.eula.Main</mainClass>
+					  </manifest>
+					</archive>
+
+				</configuration>
+				<executions>
+				  <execution>
+					<id>make-assembly</id>
+                                        <!-- bind to the packaging phase -->
+					<phase>package</phase>
+					<goals>
+						<goal>single</goal>
+					</goals>
+				  </execution>
+				</executions>
+			</plugin>			
+		</plugins>
+	</build>
+
+<repositories>
+<repository>  
+  <id>gate-ontototext</id>  
+  <url>http://maven.ontotext.com/archiva/repository/public</url>  
+  <snapshots>  
+    <!-- set this to true to use snapshot builds of GATE -->  
+    <enabled>false</enabled>  
+  </snapshots>  
+  <releases>  
+    <enabled>true</enabled>  
+    <checksumPolicy>fail</checksumPolicy>  
+  </releases>  
+</repository>
+</repositories>
+</project>
