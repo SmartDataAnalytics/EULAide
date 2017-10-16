@@ -6,10 +6,12 @@ For the complete overview of the approach please take a look at the published pa
 
 # Deployment: 
 There are two applications: a back-end and a front-end; The EULAideClient folder in this repo is the front-end and all other files belong to the back-end.
-To deploy the back-end, run Main.java as a java-application. Make sure to allocate at least 1 GB memory to avoid the OutOfMemory error.
+To deploy the back-end, run Main.java as a java-application. Make sure to allocate at least 1 GB memory to avoid the OutOfMemory error. For running Main.java in the back-end, two arguments are necessary: GATE home and DISCO WORD SPACE. If the arguments are null the program will use a default path in the root.
 The client is a light app with a bunch of HTML, CSS and angular js files. Use any application server to deploy this web app (e.g., tomcat)
 
-If both app are deployed successfully, the client send a request to the back-end and receives a JSON object when the request is valid.
+If the client side is deployed successfully, you should see the page like EULAideClient.png in your browser. In this web page you can choose a license file (text, pdf, doc, ...) or directly enter the URL of the license agreement into the URL box.
 
-For running Main.java in the back-end, two arguments are necessary: GATE home and DISCO WORD SPACE. If the arguments are null the program will use a default path in the root.
+If both sides are deployed successfully, the client sends a request to the back-end and receives a JSON object when the request is valid.
+
+
 
