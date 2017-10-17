@@ -10,7 +10,7 @@ There are two applications: a back-end and a front-end; The EULAideClient folder
 The front-end and back-end are independent. You can implement your own front-end, as long as the front-end sends a file or URL to the server, the back-end will reply with a JSON object and everything will run smoothly.
 
 The back-end is a maven-based project. In Eclipse you can easily import the project under the menu: File => Import => Existing Maven project.
-Then run Main.java as a java-application. Make sure to allocate at least 1 GB memory to avoid the OutOfMemory error. For running Main.java, two arguments are necessary: GATE home and DISCO WORD SPACE. If the arguments are null the program will use a default path in the root. The server will start under 8081 port.
+Then run Main.java as a java-application. Make sure to allocate at least 1 GB memory to avoid the OutOfMemory error. For running Main.java, two arguments are necessary: GATE home and DISCO WORD SPACE. If the arguments are null the program will use a default path in the root. The server will start under port 8081.
 
 The client is a lightweight app with a bunch of HTML, CSS and angular js files. Use any application server to deploy this web app (e.g., tomcat). If the client side is deployed successfully, you should see something like [this image](https://github.com/SmartDataAnalytics/EULAide/blob/master/EULAideClient.png) in your browser. In this web page you can choose a license file (text, pdf, doc, ...) or directly enter the URL of the license agreement into the URL box.
 
