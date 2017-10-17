@@ -5,7 +5,7 @@ For the complete overview of the approach please take a look at the published pa
 2. https://www.researchgate.net/publication/318361089_Semantic_Similarity_based_Clustering_of_License_Excerpts_for_Improved_End-User_Interpretation
 
 # Deployment: 
-There are two applications: a back-end and a front-end; The EULAideClient folder in this repo is the front-end and all other files belong to the back-end. It is better to create two seperate folders to avoid the confusion. 
+There are two applications: a back-end and a front-end; The EULAideClient folder in this repo is the front-end and all other files belong to the back-end. It is better to create two seperate folders to avoid confusion. 
 The front-end and back-end are independent. You can impelement your own front-end, as long as the front-end sends a file or URL to the server, the back-end will reply with a JSON object and everything will run smoothly.
 
 To deploy the back-end, run Main.java as a java-application. Make sure to allocate at least 1 GB memory to avoid the OutOfMemory error. For running Main.java in the back-end, two arguments are necessary: GATE home and DISCO WORD SPACE. If the arguments are null the program will use a default path in the root.
